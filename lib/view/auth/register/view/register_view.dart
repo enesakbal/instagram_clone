@@ -21,12 +21,6 @@ class _RegisterViewState extends BaseState<RegisterView>
     with TickerProviderStateMixin {
   late RegisterViewModel viewModel;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  List<String> shortCuts = [
-    '@gmail.com',
-    '@hotmail.com',
-    '@outlook.com',
-    '@yahoo.com'
-  ];
 
   late TabController controller;
   @override
@@ -163,14 +157,14 @@ class _RegisterViewState extends BaseState<RegisterView>
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           CustomTextFormField(
-            textEditingController: TextEditingController(),
-            validator: (value) {},
+            textEditingController: viewModel.phoneNumberController,
+            validator: (value) => value!.isValidPhoneNumber,
+            keyboardType: TextInputType.phone,
             hintText: 'Phone Number',
             inputFormatter: [
               MaskTextInputFormatter(
-                mask: '+90 (###) ###-##-##',
+                mask: '+90 ### ### ## ##',
                 filter: {'#': RegExp(r'[0-9]')},
-                initialText: '+90 (123) 456-78-90',
               )
             ],
           ),
@@ -187,7 +181,10 @@ class _RegisterViewState extends BaseState<RegisterView>
           Observer(builder: (_) {
             return CustomButton(
               onPress: () async {
-                await viewModel.nextStepPhoneONE();
+                if (formKey.currentState!.validate()) {
+                  await viewModel.nextStepPhone(
+                      phoneNumber: viewModel.phoneNumberController.text);
+                }
               },
               height: 6.h,
               hasPressed: viewModel.hasPressed,
@@ -209,11 +206,11 @@ class _RegisterViewState extends BaseState<RegisterView>
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           CustomTextFormField(
-            textEditingController: TextEditingController(),
+            textEditingController: viewModel.emailController,
+            hintText: 'Email Adress',
             validator: (value) {
               return value!.isValidEmail;
             },
-            hintText: 'Email Adress',
           ),
           SizedBox(height: 2.h),
           Container(
@@ -221,10 +218,19 @@ class _RegisterViewState extends BaseState<RegisterView>
             height: 3.h,
             child: ListView.builder(
                 shrinkWrap: true,
+                itemCount: viewModel.shortCuts.length,
                 scrollDirection: Axis.horizontal,
-                itemCount: shortCuts.length,
                 itemBuilder: (context, index) {
-                  return Center(child: _emailShortCut(shortCuts[index]));
+                  return InkWell(
+                      onTap: () {
+                        if (viewModel.emailController.text.isNotEmpty) {
+                          viewModel.emailController.text +=
+                              viewModel.shortCuts[index];
+                        }
+                      },
+                      child: Center(
+                        child: _emailShortCut(viewModel.shortCuts[index]),
+                      ));
                 }),
           ),
           SizedBox(
@@ -233,9 +239,10 @@ class _RegisterViewState extends BaseState<RegisterView>
           Observer(builder: (_) {
             return CustomButton(
               onPress: () async {
-                if (formKey.currentState!.validate()) {
-                  await viewModel.nextStepPhoneONE();
-                }
+                viewModel.hasPressed
+                    ? print('geçmez')
+                    : await viewModel.nextStepEmail(
+                        email: viewModel.emailController.text);
               },
               height: 6.h,
               hasPressed: viewModel.hasPressed,
@@ -249,10 +256,6 @@ class _RegisterViewState extends BaseState<RegisterView>
     );
   }
 
-  //TODO
-  //emailShortCut adı altında atımic bir widget yaz
-  //dilersen view içerisinde _widgets adlı klasör açıp ona yazabilirsin
-  //şimdiden kolay gelsin
   Widget _emailShortCut(String text) {
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 1.w),

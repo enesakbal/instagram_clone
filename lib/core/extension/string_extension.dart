@@ -11,4 +11,19 @@ extension StringExtension on String {
           isNotEmpty
       ? null
       : 'Şifre en az 8 karakter olmalı. En az bir büyük karakter ve en az bir rakam içermelidir.';
+
+  String? isValidConfimationCode(String? code) =>
+      contains(RegExp(ApplicationConstants.CONFIRMATION_REGEX)) &&
+              isNotEmpty &&
+              length == 6 &&
+              this == code
+          ? null
+          : 'Confirmation code is wrong';
+
+  String? get isValidPhoneNumber =>
+      contains(RegExp(ApplicationConstants.PHONE_NUMBER_REGEX)) &&
+              isNotEmpty &&
+              length == 17
+          ? null
+          : 'Phone number format is wrong';
 }

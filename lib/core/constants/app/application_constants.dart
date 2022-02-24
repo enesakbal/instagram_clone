@@ -4,7 +4,13 @@ class ApplicationConstants {
 
   static const PASSWORD_REGEX =
       r'^(?=.*[a-z.!#$%&’*+/=?^_`{|}~-])(?=.*[A-Z.!#$%&’*+/=?^_`{|}~-])(?=.*\d)[\w!@#$%^&*?~()-.!#$%&’*+/=?^_`{|}~-]{8,}$';
+
   static const NOT_SPECIAL_REGEX = r'^[a-z0-9_.-]*$';
+
+  static const CONFIRMATION_REGEX = r'[0-9]';
+
+  static const PHONE_NUMBER_REGEX =
+      r'(([\+]90?)|([0]?))([ ]?)((\([0-9]{3}\))|([0-9]{3}))([ ]?)([0-9]{3})(\s*[\-]?)([0-9]{2})(\s*[\-]?)([0-9]{2})';
 
   static const NAME_SURNAME_REGEX_EN = r'^[a-zA-Z ]*$'; // EN
 

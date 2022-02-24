@@ -40,7 +40,6 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      //TODO EN KEYİFLİ YERİ SANA BIRAKTIM KIYMETİNİ BİLMEN LAZIM
       color: Colors.transparent,
       width: width ?? 100.w,
       height: height,

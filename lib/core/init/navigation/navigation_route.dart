@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/core/constants/navigation/navigation_constants.dart';
+import 'package:instagram_clone/view/auth/register/view/email_verification_view.dart';
+import 'package:instagram_clone/view/auth/register/view/phone_verification_view.dart';
 import 'package:instagram_clone/view/auth/register/view/register_view.dart';
-
 
 import '../../../view/auth/login/view/login_view.dart';
 
@@ -20,10 +21,23 @@ class NavigationRoute {
 
       case NavigationConstants.REGISTER_VIEW:
         return defaultNavigate(RegisterView());
-        
+
+      case NavigationConstants.REGISTER_PHONE_VERIFICATION:
+        return defaultNavigate(PhoneVerificationView(
+          phoneNumber: args.arguments as String,
+        ));
+
+      case NavigationConstants.REGISTER_EMAIL_VERIFICATION:
+        return defaultNavigate(EmailVerificationView(
+          email: args.arguments as String,
+        ));
       default:
         return defaultNavigate(
-          Scaffold(body: Center(child: Text('Burda OLMAMALI'),),),
+          Scaffold(
+            body: Center(
+              child: Text('Burda OLMAMALI'),
+            ),
+          ),
         );
     }
   }

@@ -11,11 +11,13 @@ class CustomTextFormField extends StatelessWidget {
   final TextStyle? hintStyle;
   final String? Function(String?) validator;
   final List<TextInputFormatter>? inputFormatter;
+  final TextInputType? keyboardType;
 
   const CustomTextFormField(
       {Key? key,
       required this.textEditingController,
       required this.validator,
+      this.keyboardType,
       this.hintText,
       this.counter,
       this.isObscure = false,
@@ -31,6 +33,7 @@ class CustomTextFormField extends StatelessWidget {
       validator: validator,
       controller: textEditingController,
       inputFormatters: inputFormatter,
+      keyboardType: keyboardType,
       obscuringCharacter: '*',
       obscureText: isObscure,
       cursorColor: Colors.black26,
